@@ -86,7 +86,7 @@ module MassiveSeed
                              { "#{request.id}" => possible_donations.sample },
                              user_id: lender.id)
         order.update_contributed(lender)
-        puts "Created Order for Request #{request.title} by Lender #{lender.name}"
+        puts "Created Order by Lender #{lender.name}"
       end
     end
   end
