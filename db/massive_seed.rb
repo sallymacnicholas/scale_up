@@ -6,7 +6,7 @@ module MassiveSeed
       create_known_users
       create_borrowers(30000)
       create_lenders(200000)
-      create_loan_requests_for_each_borrower(17)
+      create_loan_requests_for_each_borrower(500000)
       create_categories
       create_orders
     end
@@ -66,20 +66,18 @@ module MassiveSeed
     end
 
     def create_loan_requests_for_each_borrower(quantity)
-        borrowers.each do |borrower|
-          borrower.loan_requests.populate(quantity) do |loan|
-            loan.title = Faker::Name.name,
-            loan.description = Faker::Company.catch_phrase,
-            loan.amount = 200,
-            loan.status = [0,1].sample,
-            loan.requested_by_date = Faker::Time.between(7.days.ago, 3.days.ago),
-            loan.contributed = "0",
-            loan.repayment_rate = 1,
-            loan.repayment_begin_date = Faker::Time.between(3.days.ago, Time.now)
-            loan.user_id = borrower.id
-            puts "created loan request #{loan.title}for #{borrower.name}"
-          end
-        end
+      LoanRequest.populate(quantity) do |lr|
+        lr.title = Faker::Commerce.product_name
+        lr.description = Faker::Company.catch_phrase
+        lr.amount = 200
+        lr.status = [0, 1].sample
+        lr.requested_by_date = Faker::Time.between(7.days.ago, 3.days.ago)
+        lr.repayment_begin_date = Faker::Time.between(3.days.ago, Time.now)
+        lr.repayment_rate = 1
+        lr.contributed = 0
+        lr.repayed = 0
+        lr.user_id = borrowers.sample.id
+      end
     end
 
     def create_orders
