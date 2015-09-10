@@ -55,14 +55,6 @@ module MassiveSeed
         "one", "two", "three", "four", "five", "six", "seven"].each do |cat|
         Category.create(title: cat, description: cat + " stuff")
       end
-      put_requests_in_categories
-    end
-
-    def put_requests_in_categories
-      LoanRequest.all.each do |request|
-        Category.all.shuffle.first.loan_requests << request
-        puts "linked request and category"
-      end
     end
 
     def create_loan_requests_for_each_borrower(quantity)
@@ -78,6 +70,10 @@ module MassiveSeed
         lr.contributed = 0
         lr.repayed = 0
         lr.user_id = b.sample.id
+        LoanRequestsCategory.populate(2) do |cat|
+          cat.loan_request_id = lr.id
+          cat.category_id = Category.all.sample.id
+        end
       end
     end
 
