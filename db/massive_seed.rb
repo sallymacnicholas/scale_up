@@ -66,6 +66,7 @@ module MassiveSeed
     end
 
     def create_loan_requests_for_each_borrower(quantity)
+      b = borrowers
       LoanRequest.populate(quantity) do |lr|
         lr.title = Faker::Commerce.product_name
         lr.description = Faker::Company.catch_phrase
@@ -76,7 +77,7 @@ module MassiveSeed
         lr.repayment_rate = 1
         lr.contributed = 0
         lr.repayed = 0
-        lr.user_id = borrowers.sample.id
+        lr.user_id = b.sample.id
       end
     end
 
