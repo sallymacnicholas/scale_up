@@ -8,7 +8,7 @@ module MassiveSeed
       create_lenders(200000)
       create_categories
       create_loan_requests_for_each_borrower(500000)
-      create_orders
+      create_orders(50000)
     end
 
     def lenders
@@ -81,14 +81,12 @@ module MassiveSeed
     def create_orders(num)
       possible_donations = %w(25, 50, 75, 100, 125, 150, 175, 200)
       num.times do
-        loan_requests.each do |request|
-          lender = lenders.sample
-          order = Order.create(cart_items:
-                               { "#{request.id}" => possible_donations.sample },
-                               user_id: lender.id)
-          order.update_contributed(lender)
-          puts "Created Order for Request #{request.title} by Lender #{lender.name}"
-        end
+        lender = lenders.sample
+        order = Order.create(cart_items:
+                             { "#{request.id}" => possible_donations.sample },
+                             user_id: lender.id)
+        order.update_contributed(lender)
+        puts "Created Order for Request #{request.title} by Lender #{lender.name}"
       end
     end
   end
