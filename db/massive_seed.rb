@@ -6,8 +6,8 @@ module MassiveSeed
       create_known_users
       create_borrowers(30000)
       create_lenders(200000)
-      create_loan_requests_for_each_borrower(500000)
       create_categories
+      create_loan_requests_for_each_borrower(500000)
       create_orders
     end
 

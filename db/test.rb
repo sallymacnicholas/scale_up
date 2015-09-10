@@ -7,8 +7,8 @@ module Test
       create_known_users
       create_borrowers(5)
       create_lenders(10)
-      create_loan_requests_for_each_borrower(50)
       create_categories
+      create_loan_requests_for_each_borrower(20)
       create_orders
     end
 
@@ -61,7 +61,6 @@ module Test
     def create_loan_requests_for_each_borrower(quantity)
       b = borrowers
       LoanRequest.populate(quantity) do |lr|
-        # binding.pry
         lr.title = Faker::Commerce.product_name
         lr.description = Faker::Company.catch_phrase
         lr.amount = 200
@@ -72,9 +71,7 @@ module Test
         lr.contributed = 0
         lr.repayed = 0
         lr.user_id = b.all.sample.id
-
         LoanRequestsCategory.populate(2) do |lrcat|
-binding.pry
           lrcat.loan_request_id = lr.id
           lrcat.category_id = Category.all.sample.id
         end
