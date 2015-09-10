@@ -1,12 +1,13 @@
 require 'populator'
 require 'faker'
+require 'pry'
 module Test
   class Seed
     def run
       create_known_users
-      create_borrowers(100)
-      create_lenders(200)
-      create_loan_requests_for_each_borrower(2)
+      create_borrowers(5)
+      create_lenders(10)
+      create_loan_requests_for_each_borrower(50)
       create_categories
       create_orders
     end
@@ -52,38 +53,36 @@ module Test
     def create_categories
       ["agriculture", "community", "education", "pizza", "food", 
         "teaching", "school", "turing", "category", "hey",
-        "one", "two", "three", "four", "five"].each do |cat|
+        "one", "two", "three", "four", "five", "six", "seven"].each do |cat|
         Category.create(title: cat, description: cat + " stuff")
-      end
-      put_requests_in_categories
-    end
-
-    def put_requests_in_categories
-      LoanRequest.all.each do |request|
-        Category.all.shuffle.first.loan_requests << request
-        puts "linked request and category"
       end
     end
 
     def create_loan_requests_for_each_borrower(quantity)
-        borrowers.each do |borrower|
-          borrower.loan_requests.populate(quantity) do |loan|
-            loan.title = Faker::Name.name,
-            loan.description = Faker::Company.catch_phrase,
-            loan.amount = 200,
-            loan.status = [0,1].sample,
-            loan.requested_by_date = Faker::Time.between(7.days.ago, 3.days.ago),
-            loan.contributed = "0",
-            loan.repayment_rate = 1,
-            loan.repayment_begin_date = Faker::Time.between(3.days.ago, Time.now)
-            loan.user_id = borrower.id
-            puts "created loan request #{loan.title}for #{borrower.name}"
-          end
+      b = borrowers
+      LoanRequest.populate(quantity) do |lr|
+        # binding.pry
+        lr.title = Faker::Commerce.product_name
+        lr.description = Faker::Company.catch_phrase
+        lr.amount = 200
+        lr.status = [0, 1].sample
+        lr.requested_by_date = Faker::Time.between(7.days.ago, 3.days.ago)
+        lr.repayment_begin_date = Faker::Time.between(3.days.ago, Time.now)
+        lr.repayment_rate = 1
+        lr.contributed = 0
+        lr.repayed = 0
+        lr.user_id = b.all.sample.id
+
+        LoanRequestsCategory.populate(2) do |lrcat|
+binding.pry
+          lrcat.loan_request_id = lr.id
+          lrcat.category_id = Category.all.sample.id
         end
+      end
     end
 
     def create_orders
-      loan_requests = LoanRequest.take(100)
+      loan_requests = LoanRequest.take(50000)
       possible_donations = %w(25, 50, 75, 100, 125, 150, 175, 200)
       lenders = User.where(role: 0)
       loan_requests.each do |request|
@@ -95,6 +94,5 @@ module Test
         puts "Created Order for Request #{request.title} by Lender #{lender.name}"
       end
     end
-    
   end
 end
