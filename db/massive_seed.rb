@@ -69,7 +69,7 @@ module MassiveSeed
         lr.repayment_rate = 1
         lr.contributed = 0
         lr.repayed = 0
-        lr.user_id = b.sample.id
+        lr.user_id = b.all.sample.id
         LoanRequestsCategory.populate(2) do |cat|
           cat.loan_request_id = lr.id
           cat.category_id = Category.all.sample.id
