@@ -12,11 +12,11 @@ module MassiveSeed
     end
 
     def lenders
-      User.where(role: 0)
+      @lenders ||= User.where(role: 0)
     end
 
     def borrowers
-      User.where(role: 1)
+      @borrowers ||= User.where(role: 1)
     end
 
     def orders
@@ -78,12 +78,17 @@ module MassiveSeed
       end
     end
 
+    def loan_request_ids
+      @loan_requests ||= LoanRequest.pluck(:id)
+    end
+
     def create_orders(num)
       possible_donations = %w(25, 50, 75, 100, 125, 150, 175, 200)
       num.times do
         lender = lenders.sample
+        request_id = loan_request_ids.sample 
         order = Order.create(cart_items:
-                             { "#{request.id}" => possible_donations.sample },
+                             { "#{request_id}" => possible_donations.sample },
                              user_id: lender.id)
         order.update_contributed(lender)
         puts "Created Order by Lender #{lender.name}"
