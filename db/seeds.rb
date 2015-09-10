@@ -1,4 +1,4 @@
-require './db/test'
+require './db/small_seed'
 require './db/massive_seed'
 
 if Rails.env.production?
