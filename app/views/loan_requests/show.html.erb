@@ -1,6 +1,6 @@
 <ul class="breadcrumb">
-  <li><a href="/">Home</a></li>
-  <li><a href="/browse">Browse Loan Requests</a></li>
+<li><a href="/">Home</a></li>
+<li><a href="/browse">Browse Loan Requests</a></li>
 </ul>
 <!-- Page Content -->
 <div class="container">
@@ -30,16 +30,18 @@
         <li>Requested by <%= @loan_request.requested_by %></li>
         <li>Begins Repayment on <%= @loan_request.repayment_begin %></li>
         <li>Repayment rate: <%= @loan_request.repayment_rate.capitalize %></li>
-        <li>Category: <% @loan_request.categories.each do |cat| %>
-          <%= cat.title.capitalize %>
+        <% cache do %>
+          <li>Category: <% @loan_request.categories.each do |cat| %>
+            <%= cat.title.capitalize %>
+          <% end %>
+          </li>
         <% end %>
-        </li>
         <li>Loan Amount: <%= number_to_currency(@loan_request.amount) %></li>
         <li>Loan Contribution: <%= number_to_currency(@loan_request.contributed) %></li>
       </ul>
       <br>
       <%  if !current_borrower? %>
-      <%= link_to "Contribute $25", cart_path(loan_request: @loan_request.id.to_i, amount: 25), method: 'post', class: "btn btn-info" %>
+        <%= link_to "Contribute $25", cart_path(loan_request: @loan_request.id.to_i, amount: 25), method: 'post', class: "btn btn-info" %>
       <% end %>
     </div>
 
