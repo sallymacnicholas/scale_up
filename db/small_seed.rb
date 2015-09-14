@@ -1,12 +1,14 @@
+require 'populator'
+require 'faker'
 module SmallSeed
   class Seed
     def run
       create_known_users
-      create_borrowers(10)
-      create_lenders(100)
-      create_loan_requests_for_each_borrower(20)
+      create_borrowers(100)
+      create_lenders(1000)
       create_categories
-      create_orders
+      create_loan_requests_for_each_borrower(100)
+      create_orders(100)
     end
 
     def lenders
@@ -28,80 +30,64 @@ module SmallSeed
     end
 
     def create_lenders(quantity)
-      quantity.times do
-        name = Faker::Name.name
-        email = Faker::Internet.email
-        user = User.create(name: name,
-                           password: "password",
-                           email: email,
-                           role: 0)
+      User.populate(quantity) do |user|
+        user.name = Faker::Name.name
+        user.email = Faker::Internet.email
+        user.password_digest = "$2a$10$I3tkspOkQVkZrZHCLUInM.I/M1OvPRTH.2/YyPwb/MbfJ2mLbbUPG" 
+        user.role = 0 
         puts "created lender #{user.name}"
       end
     end
 
     def create_borrowers(quantity)
-      quantity.times do
-        name = Faker::Name.name
-        email = Faker::Internet.email
-        user = User.create(name: name,
-                           password: "password",
-                           email: email,
-                           role: 1)
+      User.populate(quantity) do |user|
+        user.name = Faker::Name.name
+        user.email = Faker::Internet.email
+        user.password_digest = "$2a$10$I3tkspOkQVkZrZHCLUInM.I/M1OvPRTH.2/YyPwb/MbfJ2mLbbUPG" 
+        user.role = 1
         puts "created borrower #{user.name}"
       end
     end
 
     def create_categories
-      ["agriculture", "community", "education"].each do |cat|
+      ["agriculture", "community", "education", "pizza", "food", 
+        "teaching", "school", "turing", "category", "hey",
+        "one", "two", "three", "four", "five", "six", "seven"].each do |cat|
         Category.create(title: cat, description: cat + " stuff")
-      end
-      put_requests_in_categories
-    end
-
-    def put_requests_in_categories
-      LoanRequest.all.shuffle.each do |request|
-        Category.all.shuffle.first.loan_requests << request
-        puts "linked request and category"
       end
     end
 
     def create_loan_requests_for_each_borrower(quantity)
-      20.times do
-        borrowers.each do |borrower|
-          title = Faker::Commerce.product_name
-          description = Faker::Company.catch_phrase
-          status = [0, 1].sample
-          request_by =
-            Faker::Time.between(7.days.ago, 3.days.ago)
-          repayment_begin_date =
-            Faker::Time.between(3.days.ago, Time.now)
-          amount = "200"
-          contributed = "0"
-          request = borrower.loan_requests.create(title: title,
-                                                  description: description,
-                                                  amount: amount,
-                                                  status: status,
-                                                  requested_by_date: request_by,
-                                                  contributed: contributed,
-                                                  repayment_rate: "weekly",
-                                                  repayment_begin_date: repayment_begin_date)
-          puts "created loan request #{request.title} for #{borrower.name}"
-          puts "There are now #{LoanRequest.count} requests"
+      b = borrowers
+      cats = Category.all
+      LoanRequest.populate(quantity) do |lr|
+        lr.title = Faker::Commerce.product_name
+        lr.description = Faker::Company.catch_phrase
+        lr.amount = 200
+        lr.status = [0, 1].sample
+        lr.requested_by_date = Faker::Time.between(7.days.ago, 3.days.ago)
+        lr.repayment_begin_date = Faker::Time.between(3.days.ago, Time.now)
+        lr.repayment_rate = 1
+        lr.contributed = 0
+        lr.repayed = 0
+        lr.user_id = b.sample.id
+        LoanRequestsCategory.populate(4) do |lrcat|
+          lrcat.loan_request_id = lr.id
+          lrcat.category_id = cats.sample.id
         end
       end
     end
 
-    def create_orders
-      loan_requests = LoanRequest.all
+    def create_orders(num)
       possible_donations = %w(25, 50, 75, 100, 125, 150, 175, 200)
-      loan_requests.each do |request|
-        donate = possible_donations.sample
-        lender = User.where(role: 0).order("RANDOM()").take(1).first
-        order = Order.create(cart_items:
-                             { "#{request.id}" => donate },
-                             user_id: lender.id)
-        order.update_contributed(lender)
-        puts "Created Order for Request #{request.title} by Lender #{lender.name}"
+      num.times do
+          lender = lenders.sample
+          lr = LoanRequest.all.sample
+          order = Order.create(cart_items:
+                               { "#{lr.id}" => possible_donations.sample },
+                               user_id: lender.id)
+          order.update_contributed(lender)
+          puts "Created Order for Request #{lr.title} by Lender #{lender.name}"
       end
     end
   end
