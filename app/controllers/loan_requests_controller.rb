@@ -2,13 +2,11 @@ class LoanRequestsController < ApplicationController
   before_action :set_loan_request, only: [:update, :show]
 
   def index
-    @loan_requests = LoanRequest.paginate(:page => params[:page], :per_page => 1)
+    @loan_requests = LoanRequest.paginate(:page => params[:page], :per_page => 12)
     @categories = Category.all
   end
 
-  def create
-    loan_request = current_user.loan_requests.new(loan_request_params)
-
+  def create loan_request = current_user.loan_requests.new(loan_request_params)
     if loan_request.save
       Category.find_by(title: params[:loan_request][:category]).loan_requests << loan_request
       flash[:notice] = "Loan Request Created"
