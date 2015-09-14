@@ -66,7 +66,7 @@ module SmallSeed
     end
 
     def create_loan_requests_for_each_borrower(quantity)
-      quantity.times do
+      20.times do
         borrowers.each do |borrower|
           title = Faker::Commerce.product_name
           description = Faker::Company.catch_phrase
@@ -106,4 +106,3 @@ module SmallSeed
     end
   end
 end
-
