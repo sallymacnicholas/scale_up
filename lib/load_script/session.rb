@@ -46,7 +46,7 @@ module LoadScript
     end
 
     def actions
-      [:browse_loan_requests, :browse_pages_loan_requests]
+      [:browse_loan_requests, :browse_pages_loan_requests, :sign_up_as_lender]
     end
 
     def log_in(email="demo+horace@jumpstartlab.com", pw="password")
@@ -66,6 +66,9 @@ module LoadScript
 
     def browse_pages_loan_requests
       session.visit "#{host}/browse"
+      session.all(".pagination a").sample.click
+      session.all(".pagination a").sample.click
+      session.all(".pagination a").sample.click
       session.all(".pagination a").sample.click
       puts "browse page lr"
     end
