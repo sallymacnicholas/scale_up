@@ -115,6 +115,7 @@ module LoadScript
       if session.has_content?("Log out")
         session.find("#logout").click
       end
+      puts 'end of logout'
     end
 
     def new_user_name
