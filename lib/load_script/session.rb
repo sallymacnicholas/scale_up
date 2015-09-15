@@ -46,8 +46,8 @@ module LoadScript
     end
 
     def actions
-     [:browse_loan_requests, :browse_pages_loan_requests, :sign_up_as_lender,
-      :sign_up_as_borrower, :browse_categories, :browse_category_pages]
+    [:browse_loan_requests, :browse_pages_loan_requests, :sign_up_as_lender,
+     :sign_up_as_borrower]
     end
 
     def log_in(email="demo+horace@jumpstartlab.com", pw="password")
@@ -72,7 +72,6 @@ module LoadScript
         session.fill_in("title", with: Faker::Commerce.product_name)
         session.fill_in("description", with: Faker::Company.catch_phrase)
         session.fill_in("image_url", with: DefaultImages.random)
-        session.fill_in
       end
     end
 
@@ -130,7 +129,7 @@ module LoadScript
         session.fill_in("user_password_confirmation", with: "password")
         session.click_link_or_button "Create Account"
       end
-      puts "sign up as lender thinalglakjsdfkj"
+      puts "sign up as lender"
     end
 
     def sign_up_as_borrower(name = new_user_name)
@@ -144,6 +143,7 @@ module LoadScript
         session.fill_in("user_password_confirmation", with: "password")
         session.click_link_or_button "Create Account"
       end
+      puts "sign up as borrower"
     end
 
     def categories
