@@ -46,8 +46,8 @@ module LoadScript
     end
 
     def actions
-      [:browse_loan_requests, :browse_pages_loan_requests, :sign_up_as_lender,
-        :sign_up_as_borrower]
+     [:browse_loan_requests, :browse_pages_loan_requests, :sign_up_as_lender,
+      :sign_up_as_borrower, :browse_categories, :browse_category_pages]
     end
 
     def log_in(email="demo+horace@jumpstartlab.com", pw="password")
@@ -65,6 +65,36 @@ module LoadScript
       puts "browse loan request"
     end
 
+    def borrower_creates_loan_request
+      sign_up_as_borrower
+      session.click_on "Create Loan Request"
+      session.within("#loanRequestModal") do
+        session.fill_in("title", with: Faker::Commerce.product_name)
+        session.fill_in("description", with: Faker::Company.catch_phrase)
+        session.fill_in("image_url", with: DefaultImages.random)
+        session.fill_in
+      end
+    end
+
+    def browse_categories
+      session.visit "#{host}/browse"
+      session.find("#dropdownMenu1").click
+      session.within("#categories") do
+        session.all("a").sample.click
+      end
+      session.all(".lr-about").sample.click
+      puts "browse categories"
+    end
+
+    def browse_category_pages
+      session.visit "#{host}/browse"
+      session.find("#dropdownMenu1").click
+      session.within("#categories") do
+        session.all("a").sample.click
+      end
+      session.all(".pagination a").sample.click
+    end
+    
     def browse_pages_loan_requests
       session.visit "#{host}/browse"
       session.all(".pagination a").sample.click
@@ -103,7 +133,7 @@ module LoadScript
       puts "sign up as lender thinalglakjsdfkj"
     end
 
-    def sign_us_as_borrower(name = new_user_name)
+    def sign_up_as_borrower(name = new_user_name)
       log_out
       session.find("#sign-up-dropdown").click
       session.find("#sign-up-as-borrower").click
