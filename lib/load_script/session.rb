@@ -47,10 +47,11 @@ module LoadScript
 
     def actions
     [:browse_loan_requests, :browse_pages_loan_requests, :sign_up_as_lender,
-     :sign_up_as_borrower]
+     :sign_up_as_borrower, :browse_categories, :browse_category_pages]
     end
 
     def log_in(email="demo+horace@jumpstartlab.com", pw="password")
+      puts "log in"
       log_out
       session.visit host
       session.click_link("Log In")
@@ -60,12 +61,14 @@ module LoadScript
     end
 
     def browse_loan_requests
+      puts "browse loan request"
       session.visit "#{host}/browse"
       session.all(".lr-about").sample.click
       puts "browse loan request"
     end
 
     def borrower_creates_loan_request
+      puts "borrower creates loan request"
       sign_up_as_borrower
       session.click_on "Create Loan Request"
       session.within("#loanRequestModal") do
@@ -76,6 +79,7 @@ module LoadScript
     end
 
     def browse_categories
+      puts "browse categories"
       session.visit "#{host}/browse"
       session.find("#dropdownMenu1").click
       session.within("#categories") do
@@ -86,6 +90,7 @@ module LoadScript
     end
 
     def browse_category_pages
+      puts "browse category pages"
       session.visit "#{host}/browse"
       session.find("#dropdownMenu1").click
       session.within("#categories") do
@@ -95,6 +100,7 @@ module LoadScript
     end
     
     def browse_pages_loan_requests
+      puts "browse pages loans"
       session.visit "#{host}/browse"
       session.all(".pagination a").sample.click
       session.all(".pagination a").sample.click
@@ -104,6 +110,7 @@ module LoadScript
     end
 
     def log_out
+      puts 'logout'
       session.visit host
       if session.has_content?("Log out")
         session.find("#logout").click
@@ -119,6 +126,7 @@ module LoadScript
     end
 
     def sign_up_as_lender(name = new_user_name)
+      puts "sign up as lender"
       log_out
       session.find("#sign-up-dropdown").click
       session.find("#sign-up-as-lender").click
@@ -133,6 +141,7 @@ module LoadScript
     end
 
     def sign_up_as_borrower(name = new_user_name)
+      puts "sign up as borrower"
       log_out
       session.find("#sign-up-dropdown").click
       session.find("#sign-up-as-borrower").click
