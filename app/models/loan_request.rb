@@ -81,6 +81,6 @@ class LoanRequest < ActiveRecord::Base
   end
 
   def related_projects
-    categories.sample.loan_requests.sample(3)
+    LoanRequestsCategory.where(category_id: categories.pluck(:id)).limit(3).map(&:loan_request)
   end
 end
