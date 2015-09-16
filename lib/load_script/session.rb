@@ -34,7 +34,7 @@ module LoadScript
         send(name)
       end
     rescue Capybara::Poltergeist::TimeoutError,
-      Capybara::Poltergeist::TimeoutError
+      Capybara::Poltergeist::StatusFailError
       logger.error("Timed out executing Action: #{name}. Will continue.")
     end
 
