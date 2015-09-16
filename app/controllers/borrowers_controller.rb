@@ -28,7 +28,7 @@ class BorrowersController < ApplicationController
   end
 
   def set_borrower
-    @borrower = User.find(params[:id])
+    @borrower = User.includes(:loan_requests).find(params[:id])
   end
 
   def this_borrower?

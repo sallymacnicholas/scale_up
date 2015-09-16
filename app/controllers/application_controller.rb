@@ -7,7 +7,9 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user
-    @current_user ||= User.find(session[:user_id]) if session[:user_id]
+    Rails.cache.fetch("current_user-#{session[:user_id]}", expires_in: 1.day) do
+      User.find(session[:user_id]) if session[:user_id]
+    end
   end
 
   def current_borrower?
