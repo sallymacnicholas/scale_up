@@ -33,7 +33,8 @@ module LoadScript
       benchmarked(name) do
         send(name)
       end
-    rescue Capybara::Poltergeist::TimeoutError
+    rescue Capybara::Poltergeist::TimeoutError,
+      Capybara::Poltergeist::TimeoutError
       logger.error("Timed out executing Action: #{name}. Will continue.")
     end
 
