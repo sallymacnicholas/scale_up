@@ -1,24 +1,27 @@
-  <div class="row">
-    <div class="col-md-3 pull-left">
+<div class="row">
+<div class="col-md-3 pull-left">
 
-      <div class="dropdown">
-        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-          Dropdown
-          <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-          <% @categories.each do |category|  %>
-            <li> <%= link_to category.title, category %> </li>
-          <% end %>
-        </ul>
-      </div>
-    </div>
-    <%= render "shared/search" %>
-
+  <div class="dropdown">
+    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+      Dropdown
+      <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+      <% cache 'category page all categories' do %>
+        <% all_categories.each do |category|  %>
+          <li> <%= link_to category.title, category %> </li>
+        <% end %>
+      <% end %>
+    </ul>
   </div>
+</div>
+<%= render "shared/search" %>
+
+</div>
 </div>
 
 <br>
-
+<% cache "category-loan-request-#{params[:id]}-#{params[:page]}" do %>
 <%= render partial: "shared/loan_request", collection: @loan_requests %>
+<% end %>
 <%= will_paginate @loan_requests %>

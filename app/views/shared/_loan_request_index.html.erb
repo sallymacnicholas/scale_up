@@ -25,6 +25,7 @@
 </div>
 
 <br>
-
+<% cache "loan-requests-index-#{params[:page]" do %>
 <%= render partial: "shared/loan_request", collection: @loan_requests %>
+<% end %>
 <%= will_paginate @loan_requests %>

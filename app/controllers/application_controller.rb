@@ -16,5 +16,9 @@ class ApplicationController < ActionController::Base
     current_user && current_user.borrower?
   end
 
-  helper_method :create_cart, :current_user, :current_borrower?
+  def all_categories
+    @all_categories ||= Category.all_categories
+  end
+  
+  helper_method :create_cart, :current_user, :current_borrower?, :all_categories
 end
