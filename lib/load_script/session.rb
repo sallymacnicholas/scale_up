@@ -99,51 +99,43 @@ module LoadScript
 
     def browse_categories
       log_in
-      10.times do
-        puts "browse categories"
-        session.visit "#{host}/browse"
-        session.find("#dropdownMenu1").click
-        session.within("#categories") do
-        session.all("a").sample.click
-      end
+      puts "browse categories"
+      session.visit "#{host}/browse"
+      session.find("#dropdownMenu1").click
+      session.within("#categories") do
+      session.all("a").sample.click
       session.all(".lr-about").sample.click
-    end
+      end
       puts "browse categories"
     end
 
     def browse_category_pages
       log_in
-      10.times do
         puts "browse category pages"
         session.visit "#{host}/browse"
         session.find("#dropdownMenu1").click
         session.within("#categories") do
         session.all("a").sample.click
       end
-      end
       session.all(".pagination a").sample.click
     end
 
     def browse_pages_loan_requests
       log_in
-      10.times do
-        puts "browse pages loans"
-        session.visit "#{host}/browse"
-        session.all(".pagination a").sample.click
-        session.all(".pagination a").sample.click
-        session.all(".pagination a").sample.click
-        session.all(".pagination a").sample.click
-      end
+      puts "browse pages loans"
+      session.visit "#{host}/browse"
+      session.all(".pagination a").sample.click
+      session.all(".pagination a").sample.click
+      session.all(".pagination a").sample.click
+      session.all(".pagination a").sample.click
       puts "browse page lr"
     end
 
     def individual_loan_request
       log_in
-      10.times do
-        puts "individual loan request"
-        session.visit "#{host}/browse"
-        session.all(".lr-about").sample.click
-      end
+      puts "individual loan request"
+      session.visit "#{host}/browse"
+      session.all(".lr-about").sample.click
     end
 
     def log_out
@@ -162,37 +154,33 @@ module LoadScript
     end
 
     def sign_up_as_lender(name = new_user_name)
-      10.times do
-        puts "sign up as lender"
-        log_out
-        session.visit "#{host}/browse"
-        session.find("#sign-up-dropdown").click
-        session.find("#sign-up-as-lender").click
-        session.within("#lenderSignUpModal") do
-        session.fill_in("user_name", with: name)
-        session.fill_in("user_email", with: new_user_email(name))
-        session.fill_in("user_password", with: "password")
-        session.fill_in("user_password_confirmation", with: "password")
-        session.click_link_or_button "Create Account"
-        end
+      puts "sign up as lender"
+      log_out
+      session.visit "#{host}/browse"
+      session.find("#sign-up-dropdown").click
+      session.find("#sign-up-as-lender").click
+      session.within("#lenderSignUpModal") do
+      session.fill_in("user_name", with: name)
+      session.fill_in("user_email", with: new_user_email(name))
+      session.fill_in("user_password", with: "password")
+      session.fill_in("user_password_confirmation", with: "password")
+      session.click_link_or_button "Create Account"
       end
       puts "sign up as lender"
     end
 
     def sign_up_as_borrower(name = new_user_name)
-      10.times do
-        puts "sign up as borrower"
-        log_out
-        session.visit "#{host}/browse"
-        session.find("#sign-up-dropdown").click
-        session.find("#sign-up-as-borrower").click
-        session.within("#borrowerSignUpModal") do
-        session.fill_in("user_name", with: name)
-        session.fill_in("user_email", with: new_user_email(name))
-        session.fill_in("user_password", with: "password")
-        session.fill_in("user_password_confirmation", with: "password")
-        session.click_link_or_button "Create Account"
-        end
+      puts "sign up as borrower"
+      log_out
+      session.visit "#{host}/browse"
+      session.find("#sign-up-dropdown").click
+      session.find("#sign-up-as-borrower").click
+      session.within("#borrowerSignUpModal") do
+      session.fill_in("user_name", with: name)
+      session.fill_in("user_email", with: new_user_email(name))
+      session.fill_in("user_password", with: "password")
+      session.fill_in("user_password_confirmation", with: "password")
+      session.click_link_or_button "Create Account"
       end
       puts "sign up as borrower"
     end
