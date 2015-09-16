@@ -6,6 +6,6 @@ class CategoriesController < ApplicationController
   def show
     @categories = Category.all_categories
     @category = Category.find(params[:id])
-    @loan_requests = @category.loan_requests.paginate(:page => params[:page], :per_page => 12, total_entries: @category.loan_requests_categories.length)
+    @loan_requests = @category.loan_requests.paginate(:page => params[:page], :per_page => 21, total_entries: @category.loan_requests_categories.length)
   end
 end
