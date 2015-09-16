@@ -7,7 +7,7 @@ unless Rails.env.production?
         raise "PhantomJS not found. Make sure you have it installed. Try: 'brew install phantomjs'"
       end
       LoadScript::Session.new(ARGV[1]).run
-      4.times.map do
+      10.times.map do
         Thread.new do
           LoadScript::Session.new(ARGV[1]).run
         end
