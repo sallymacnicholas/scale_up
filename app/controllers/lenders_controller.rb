@@ -21,7 +21,7 @@ class LendersController < ApplicationController
 
   def show
     unless current_lender?
-      redirect_to root_path, notice: "Access denied"
+      redirect_to root_path, notice: "Sorry, page not found"
     end
   end
 
