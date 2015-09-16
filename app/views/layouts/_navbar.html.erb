@@ -55,7 +55,9 @@
 <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-      <%= render "sessions/new" %>
+      <% cache "login" do %>
+        <%= render "sessions/new" %>
+      <% end %>
     </div>
   </div>
 </div>
@@ -64,7 +66,9 @@
 <div class="modal fade" id="lenderSignUpModal" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-      <%= render "lenders/new" %>
+      <% cache "new-lender" do %>
+        <%= render "lenders/new" %>
+      <% end %>
     </div>
   </div>
 </div>
@@ -73,7 +77,9 @@
 <div class="modal fade" id="borrowerSignUpModal" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-      <%= render "borrowers/new" %>
+      <% cache "new-borrower" do %>
+        <%= render "borrowers/new" %>
+      <% end %>
     </div>
   </div>
 </div>

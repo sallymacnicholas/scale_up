@@ -98,37 +98,35 @@ module LoadScript
     end
 
     def browse_categories
-      log_in
       puts "browse categories"
+      log_in
       session.visit "#{host}/browse"
       session.find("#dropdownMenu1").click
       session.within("#categories") do
-      session.all("a").sample.click
-      session.all(".lr-about").sample.click
+        session.all("a").sample.click
       end
-      puts "browse categories"
+      session.all(".lr-about").sample.click
     end
 
     def browse_category_pages
+      puts "browse category pages"
       log_in
-        puts "browse category pages"
-        session.visit "#{host}/browse"
-        session.find("#dropdownMenu1").click
-        session.within("#categories") do
+      session.visit "#{host}/browse"
+      session.find("#dropdownMenu1").click
+      session.within("#categories") do
         session.all("a").sample.click
       end
       session.all(".pagination a").sample.click
     end
 
     def browse_pages_loan_requests
-      log_in
       puts "browse pages loans"
+      log_in
       session.visit "#{host}/browse"
       session.all(".pagination a").sample.click
       session.all(".pagination a").sample.click
       session.all(".pagination a").sample.click
       session.all(".pagination a").sample.click
-      puts "browse page lr"
     end
 
     def individual_loan_request
@@ -166,7 +164,6 @@ module LoadScript
       session.fill_in("user_password_confirmation", with: "password")
       session.click_link_or_button "Create Account"
       end
-      puts "sign up as lender"
     end
 
     def sign_up_as_borrower(name = new_user_name)
@@ -182,7 +179,6 @@ module LoadScript
       session.fill_in("user_password_confirmation", with: "password")
       session.click_link_or_button "Create Account"
       end
-      puts "sign up as borrower"
     end
 
     def categories
