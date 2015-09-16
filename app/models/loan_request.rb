@@ -83,4 +83,10 @@ class LoanRequest < ActiveRecord::Base
   def related_projects
     LoanRequestsCategory.where(category_id: categories.pluck(:id)).limit(3).map(&:loan_request)
   end
+
+  def self.all_count
+    Rails.cache.fetch("all_loan_requests_count", expires_in: 1.day) do
+      self.count
+    end
+  end
 end
