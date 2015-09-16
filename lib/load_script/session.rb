@@ -33,8 +33,7 @@ module LoadScript
       benchmarked(name) do
         send(name)
       end
-    rescue Capybara::Poltergeist::TimeoutError,
-      Capybara::Poltergeist::StatusFailError
+    rescue Capybara::Poltergeist::TimeoutError
       logger.error("Timed out executing Action: #{name}. Will continue.")
     end
 
@@ -76,7 +75,6 @@ module LoadScript
       session.within("#loanRequestModal") do
         session.fill_in("loan_request[title]", with: Faker::Commerce.product_name)
         session.fill_in("loan_request[description]", with: Faker::Company.catch_phrase)
-        session.fill_in("loan_request[image_url]", with: image)
         session.fill_in("loan_request[requested_by_date]", with: Faker::Time.between(7.days.ago, 3.days.ago))
         session.fill_in("loan_request[repayment_begin_date]", with:
           Faker::Time.between(3.days.ago, Time.now))
@@ -98,7 +96,6 @@ module LoadScript
     end
 
     def browse_categories
-      puts "browse categories"
       log_in
       session.visit "#{host}/browse"
       session.find("#dropdownMenu1").click
@@ -109,7 +106,6 @@ module LoadScript
     end
 
     def browse_category_pages
-      puts "browse category pages"
       log_in
       session.visit "#{host}/browse"
       session.find("#dropdownMenu1").click
@@ -120,7 +116,6 @@ module LoadScript
     end
 
     def browse_pages_loan_requests
-      puts "browse pages loans"
       log_in
       session.visit "#{host}/browse"
       session.all(".pagination a").sample.click
@@ -130,7 +125,6 @@ module LoadScript
     end
 
     def individual_loan_request
-      log_in
       puts "individual loan request"
       session.visit "#{host}/browse"
       session.all(".lr-about").sample.click
@@ -152,7 +146,6 @@ module LoadScript
     end
 
     def sign_up_as_lender(name = new_user_name)
-      puts "sign up as lender"
       log_out
       session.visit "#{host}/browse"
       session.find("#sign-up-dropdown").click
@@ -167,7 +160,6 @@ module LoadScript
     end
 
     def sign_up_as_borrower(name = new_user_name)
-      puts "sign up as borrower"
       log_out
       session.visit "#{host}/browse"
       session.find("#sign-up-dropdown").click
@@ -185,8 +177,5 @@ module LoadScript
       ["Agriculture", "Education", "Community"]
     end
 
-    def image
-      @image ||= DefaultImages.random
-    end
   end
 end
