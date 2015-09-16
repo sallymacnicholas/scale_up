@@ -61,15 +61,12 @@ module LoadScript
     end
 
     def browse_loan_requests
-      puts "browse loan request"
       log_out
       session.visit "#{host}/browse"
       session.all(".lr-about").sample.click
-      puts "browse loan request"
     end
 
     def borrower_creates_loan_request
-      puts "borrower creates loan request"
       sign_up_as_borrower
       session.click_on "Create Loan Request"
       session.within("#loanRequestModal") do
@@ -85,7 +82,6 @@ module LoadScript
     end
 
     def lender_creates_loan
-      puts "lender lends"
       sign_up_as_lender
       session.visit host
       session.visit "#{host}/browse"
@@ -125,7 +121,6 @@ module LoadScript
     end
 
     def individual_loan_request
-      puts "individual loan request"
       session.visit "#{host}/browse"
       session.all(".lr-about").sample.click
     end
